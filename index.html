@@ -1,114 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daraz Clone</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daraz Clone</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
+
 <body>
 
-<header>
-    <div class="logo">Daraz</div>
-    <input type="text" placeholder="Search in Daraz">
-    <div class="db-badge" id="db-badge" title="MongoDB connection status">
-        <span class="db-dot" id="db-dot"></span>
-        <span id="db-status-text">DB…</span>
-    </div>
-    <button class="hamburger" onclick="toggleMenu()">☰</button>
-    <nav id="nav">
-        <a href="/index.html" target="_main">Home</a>
-        <a href="/index.html" target="_main">Categories</a>
-        <a href="/api/products" target="_blank">📦 API</a>
-        <a href="/api/health" target="_blank">❤️ Health</a>
-        <a href="/index.html" target="_main">Login</a>
-    </nav>
-</header>
+    <header>
+        <div class="logo">Shopify</div>
+        <input type="text" placeholder="Search in Daraz">
+        <div class="db-badge" id="db-badge" title="MongoDB connection status">
+            <span class="db-dot" id="db-dot"></span>
+            <span id="db-status-text">DB…</span>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+        <nav id="nav">
+            <a href="/index.html" target="_main">Home</a>
+            <a href="/index.html" target="_main">Categories</a>
+            <a href="/api/products" target="_blank">📦 API</a>
+            <a href="/api/health" target="_blank">❤️ Health</a>
+            <a href="/index.html" target="_main">Login</a>
+        </nav>
+    </header>
 
-<section class="offers">
-    <h1>Big Sale Today 🔥 </h1>
-    <p>Up to 50% off</p>
-</section>
+    <section class="offers">
+        <h1>Big Sale Today 🔥 </h1>
+        <p>Up to 50% off</p>
+    </section>
 
-<!-- Featured Deals — AJAX populated -->
-<section class="ajax-section">
-    <h2 class="section-title">🔥 Featured Deals</h2>
-    <div id="featured-deals-grid" class="products-grid">
-        <div class="loading-spinner"><div class="spinner"></div><p>Loading deals…</p></div>
-    </div>
-</section>
+    <!-- Featured Deals — AJAX populated -->
+    <section class="ajax-section">
+        <h2 class="section-title">🔥 Featured Deals</h2>
+        <div id="featured-deals-grid" class="products-grid">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading deals…</p>
+            </div>
+        </div>
+    </section>
 
-<!-- All Products Grid — dynamically loaded from MongoDB -->
-<section class="products-section">
-    <h2 class="section-title">All Products <span class="db-source-label">📦 from MongoDB</span></h2>
-    <div id="all-products-grid" class="products-grid">
-        <div class="loading-spinner"><div class="spinner"></div><p>Loading from database…</p></div>
-    </div>
-</section>
+    <!-- All Products Grid — dynamically loaded from MongoDB -->
+    <section class="products-section">
+        <h2 class="section-title">All Products <span class="db-source-label">📦 from MongoDB</span></h2>
+        <div id="all-products-grid" class="products-grid">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading from database…</p>
+            </div>
+        </div>
+    </section>
 
-<footer>
-    <p>© 2026 Daraz Clone</p>
-</footer>
+    <footer>
+        <p>© 2026 Daraz Clone</p>
+    </footer>
 
-<!-- Floating Add Product Button -->
-<button class="fab-add" id="open-add-modal" title="Add New Product">+</button>
+    <!-- Floating Add Product Button -->
+    <button class="fab-add" id="open-add-modal" title="Add New Product">+</button>
 
-<!-- Quick View Modal -->
-<div id="qv-modal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-box">
-        <button class="modal-close" id="modal-close-btn" aria-label="Close">✕</button>
-        <div class="modal-body">
-            <div id="modal-emoji" class="modal-emoji-display"></div>
-            <div class="modal-info">
-                <span id="modal-category" class="modal-cat"></span>
-                <h2 id="modal-title"></h2>
-                <div class="modal-rating">
-                    <span id="modal-stars"></span>
-                    <span id="modal-rating-val" class="rating-val"></span>
-                    <span id="modal-rating-count" class="rating-count"></span>
+    <!-- Quick View Modal -->
+    <div id="qv-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-box">
+            <button class="modal-close" id="modal-close-btn" aria-label="Close">✕</button>
+            <div class="modal-body">
+                <div id="modal-emoji" class="modal-emoji-display"></div>
+                <div class="modal-info">
+                    <span id="modal-category" class="modal-cat"></span>
+                    <h2 id="modal-title"></h2>
+                    <div class="modal-rating">
+                        <span id="modal-stars"></span>
+                        <span id="modal-rating-val" class="rating-val"></span>
+                        <span id="modal-rating-count" class="rating-count"></span>
+                    </div>
+                    <p id="modal-price" class="modal-price"></p>
+                    <p id="modal-desc" class="modal-desc"></p>
                 </div>
-                <p id="modal-price" class="modal-price"></p>
-                <p id="modal-desc" class="modal-desc"></p>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Add Product Modal -->
-<div id="add-modal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-box">
-        <button class="modal-close" id="add-modal-close-btn" aria-label="Close">✕</button>
-        <div class="modal-body form-body">
-            <h2 class="form-title">✨ Add New Product to DB</h2>
-            <form id="add-product-form">
-                <div class="form-group">
-                    <label>Product Name *</label>
-                    <input type="text" id="add-title" placeholder="e.g. Wireless Mouse" required>
-                </div>
-                <div class="form-group">
-                    <label>Price (Rs.) *</label>
-                    <input type="number" id="add-price" placeholder="e.g. 1500" required>
-                </div>
-                <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" id="add-category" placeholder="e.g. Electronics">
-                </div>
-                <div class="form-group">
-                    <label>Emoji Icon (Image)</label>
-                    <input type="text" id="add-emoji" placeholder="e.g. 🖱️ or 📦">
-                </div>
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="add-desc" rows="3" placeholder="Describe the product..."></textarea>
-                </div>
-                <button type="submit" class="add-cart">Save to MongoDB</button>
-            </form>
+    <!-- Add Product Modal -->
+    <div id="add-modal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-box">
+            <button class="modal-close" id="add-modal-close-btn" aria-label="Close">✕</button>
+            <div class="modal-body form-body">
+                <h2 class="form-title">✨ Add New Product to DB</h2>
+                <form id="add-product-form">
+                    <div class="form-group">
+                        <label>Product Name *</label>
+                        <input type="text" id="add-title" placeholder="e.g. Wireless Mouse" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (Rs.) *</label>
+                        <input type="number" id="add-price" placeholder="e.g. 1500" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="add-category" placeholder="e.g. Electronics">
+                    </div>
+                    <div class="form-group">
+                        <label>Emoji Icon (Image)</label>
+                        <input type="text" id="add-emoji" placeholder="e.g. 🖱️ or 📦">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="add-desc" rows="3" placeholder="Describe the product..."></textarea>
+                    </div>
+                    <button type="submit" class="add-cart">Save to MongoDB</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>
