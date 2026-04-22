@@ -1,0 +1,20 @@
+# ──────────────────────────────────────────────────────────────
+#  Kubernetes Service — Daraz Clone
+#  Type: LoadBalancer  →  exposes the app publicly via Azure
+#  Student: FA23-BCS-037
+# ──────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: daraz-clone-service
+  labels:
+    app: daraz-clone
+    student: fa23-bcs-037
+spec:
+  type: LoadBalancer          # Azure assigns a public external IP
+  selector:
+    app: daraz-clone          # Routes traffic to matching pods
+  ports:
+    - protocol: TCP
+      port: 80                # External port (public-facing)
+      targetPort: 3000          # Port the Node.js container listens on

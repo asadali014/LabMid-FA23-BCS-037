@@ -1,0 +1,18 @@
+# Git ignore — FA23-BCS-037 Daraz Clone
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependency folders (not applicable here, but good practice)
+node_modules/

@@ -1,0 +1,57 @@
+# ──────────────────────────────────────────────────────────────
+#  Kubernetes — MongoDB Deployment + ClusterIP Service
+#  Student: FA23-BCS-037
+#  Note: MongoDB is internal-only (ClusterIP), not exposed publicly.
+# ──────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+    student: fa23-bcs-037
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:6-jammy
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db
+      volumes:
+        - name: mongo-storage
+          emptyDir: {}     # Use PersistentVolumeClaim in production
+
+---
+# ── MongoDB Service (ClusterIP — internal cluster access only) ──
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo                    # App references MONGO_URI=mongodb://mongo:27017/...
+  labels:
+    app: mongodb
+spec:
+  type: ClusterIP                # Not exposed externally — database stays private
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

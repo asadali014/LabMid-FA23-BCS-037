@@ -1,0 +1,39 @@
+# ──────────────────────────────────────────────────────────────
+#  Kubernetes Deployment — Daraz Clone
+#  Student: FA23-BCS-037
+#  Image: fa23bcs037/daraz-clone:fa23-bcs-037
+# ──────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: daraz-clone-deployment
+  labels:
+    app: daraz-clone
+    student: fa23-bcs-037
+spec:
+  replicas: 2                    # Start with 2 pods for availability
+  selector:
+    matchLabels:
+      app: daraz-clone
+  template:
+    metadata:
+      labels:
+        app: daraz-clone
+    spec:
+      containers:
+        - name: daraz-clone
+          image: fa23bcs037/daraz-clone:fa23-bcs-037   # Docker Hub image
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: MONGO_URI
+              value: "mongodb://mongo:27017/darazdb"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"

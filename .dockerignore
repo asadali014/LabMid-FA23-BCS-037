@@ -1,0 +1,27 @@
+# ── .dockerignore — FA23-BCS-037 ──────────────────────────────
+# Prevents unnecessary files from being sent to the Docker build
+# context, reducing build time and final image size.
+
+# Node.js — never copy local node_modules; image installs its own
+node_modules/
+npm-debug.log*
+
+# Documentation & exam files
+*.md
+*.pdf
+*.txt
+
+# Docker & Kubernetes config files (not needed inside the image)
+Dockerfile
+.dockerignore
+docker-compose.yaml
+k8s-*.yaml
+
+# Git metadata
+.git
+.gitignore
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log

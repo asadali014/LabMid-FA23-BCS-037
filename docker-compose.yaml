@@ -1,0 +1,35 @@
+# ──────────────────────────────────────────────────────────────
+#  docker-compose.yaml — Daraz Clone + MongoDB
+#  Student: FA23-BCS-037
+#  Usage: docker-compose up --build
+# ──────────────────────────────────────────────────────────────
+version: '3.8'
+
+services:
+
+  # ── Node.js Application ──────────────────────────────────────
+  app:
+    build: .
+    container_name: daraz-app
+    ports:
+      - "8080:3000"               # Access at http://localhost:8080
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo:27017/darazdb
+    depends_on:
+      - mongo                     # Wait for mongo service to start
+    restart: unless-stopped
+
+  # ── MongoDB Database ─────────────────────────────────────────
+  mongo:
+    image: mongo:6-jammy          # Official MongoDB 6 image
+    container_name: daraz-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db       # Persist data across container restarts
+    restart: unless-stopped
+
+# ── Named Volume for MongoDB data ────────────────────────────
+volumes:
+  mongo-data:
