@@ -33,7 +33,7 @@ docker info
 > Tag name uses student Reg No. as required.
 
 ```bash
-docker build -t fa23bcs037/daraz-clone:fa23-bcs-037 .
+docker build -t asadali014/daraz-clone:fa23-bcs-037 .
 ```
 
 ### 1.3 Verify the Image Was Created
@@ -122,21 +122,25 @@ git log --oneline
 
 ```bash
 docker login
-docker push fa23bcs037/daraz-clone:fa23-bcs-037
+docker push asadali014/daraz-clone:fa23-bcs-037
 ```
 
 ### 3.3 Create AKS Cluster (Azure CLI)
 
 ```bash
-az group create --name daraz-rg --location eastus
+# NOTE: Azure for Students subscription only allows specific regions.
+# Allowed regions: austriaeast, uaenorth, malaysiawest, centralindia, eastasia
+az group create --name daraz-rg-india --location centralindia
 
-az aks create \
-  --resource-group daraz-rg \
-  --name daraz-cluster \
-  --node-count 1 \
-  --generate-ssh-keys
+az aks create `
+  --resource-group daraz-rg-india `
+  --name daraz-cluster `
+  --node-count 1 `
+  --node-vm-size Standard_D2s_v3 `
+  --generate-ssh-keys `
+  --network-plugin kubenet
 
-az aks get-credentials --resource-group daraz-rg --name daraz-cluster
+az aks get-credentials --resource-group daraz-rg-india --name daraz-cluster
 ```
 
 ### 3.4 Deploy MongoDB First, Then the App
@@ -200,7 +204,7 @@ kubectl get pods
 ```bash
 kubectl describe pod daraz-clone-deployment-xxx-yyy
 # Events:
-#   Failed to pull image "fa23bcs037/daraz-clone:fa23-bcs-037":
+#   Failed to pull image "asadali014/daraz-clone:fa23-bcs-037":
 #   repository does not exist or may require 'docker login'
 ```
 
@@ -210,7 +214,7 @@ kubectl describe pod daraz-clone-deployment-xxx-yyy
 
 ```bash
 docker login
-docker push fa23bcs037/daraz-clone:fa23-bcs-037
+docker push asadali014/daraz-clone:fa23-bcs-037
 kubectl rollout restart deployment daraz-clone-deployment
 ```
 
@@ -250,8 +254,8 @@ LabMid-FA23-BCS-037/
 
 ## Required Submission Links
 
-| Item                   | Value                                                      |
-| ---------------------- | ---------------------------------------------------------- |
-| GitHub Repo            | `https://github.com/<your-username>/LabMid-FA23-BCS-037` |
-| Docker Hub Image       | `https://hub.docker.com/r/fa23bcs037/daraz-clone`        |
-| Azure / K8s Public URL | `http://<EXTERNAL-IP>` (from `kubectl get service`)    |
+| Item                   | Value                                                                        |
+| ---------------------- | ---------------------------------------------------------------------------- |
+| GitHub Repo            | `https://github.com/asadali014/LabMid-FA23-BCS-037`                        |
+| Docker Hub Image       | `https://hub.docker.com/r/asadali014/daraz-clone`                           |
+| Azure / K8s Public URL | `http://20.219.42.228` (AKS LoadBalancer — Central India)                  |
